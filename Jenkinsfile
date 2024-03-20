@@ -4,7 +4,6 @@ pipeline {
 
   // Define environment variables
   environment {
-   // DIRECTORY_PATH = "https://github.com/EkamBhullar/NewRepo"
     TESTING_ENVIRONMENT = "junit"
     PRODUCTION_ENVIRONMENT = "Aryan Singh" 
   }
