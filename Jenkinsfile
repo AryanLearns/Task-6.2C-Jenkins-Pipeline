@@ -6,6 +6,7 @@ pipeline {
             steps {
                 echo "Fetching the source code from GitHub"
                 echo "Compiling the code and generating artifacts"
+                echo "updated"
             }
         }
         stage('Unit and Integration Tests') {
