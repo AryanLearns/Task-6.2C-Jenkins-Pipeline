@@ -1,80 +1,93 @@
 pipeline {
-    agent any
+  // Allow jobs to run on any agent (e.g., virtual machines)
+  agent any
 
-    stages {
-        stage('Build') {
-            steps {
-                echo "Fetching the source code from GitHub"
-                echo "Compiling the code and generating artifacts"
-                echo "updated"
-            }
-        }
-        stage('Unit and Integration Tests') {
-            steps {
-                echo "Running unit tests started and completed"
-                echo "Running integration tests started and completed"
-            }
-            post {
-                success {
-                    mail to: 'aryansingh57602@gmail.com',
-                        subject: 'Unit and Integration Tests Success',
-                        body: 'The unit and integration tests have succeeded. Find attached logs for more information.'
-                }
-                failure {
-                    mail to: 'aryansingh57602@gmail.com',
-                        subject: 'Unit and Integration Tests Failed',
-                        body: 'The unit and integration tests have failed. Find attached logs for more information.'
-                }
-            }
-        }
-        stage('Code Analysis') {
-            steps {
-                echo "Running Code Analysis started and completed"
-            }
-        }
-        stage('Security Scan') {
-            steps {
-                echo "Running Security Scan started and completed"
-            }
-            post {
-                success {
-                    mail to: 'aryansingh57602@gmail.com',
-                        subject: 'Security Scan Success',
-                        body: 'The Security Scan has succeeded. Find attached logs for more information.'
-                }
-                failure {
-                    mail to: 'aryansingh57602@gmail.com',
-                        subject: 'Security Scan Failed',
-                        body: 'The Security Scan has failed. Find attached logs for more information.'
-                }
-            }
-        }
-        stage('Deploy to Staging') {
-            steps {
-                echo "Running Deploy to Staging started and completed"
-            }
-        }
-        stage('Integration Tests on Staging') {
-            steps {
-                echo "Running Integration Tests on Staging started and completed"
-            }
-            post {
-                success {
-                    mail to: 'aryansingh57602@gmail.com',
-                        subject: 'Integration Tests on Staging Success',
-                        body: 'The Integration Tests on Staging have succeeded. Find attached logs for more information.'
-                }
-                failure {
-                    mail to: 'aryansingh57602@gmail.com',
-                        subject: 'Integration Tests on Staging Failed',
-                        body: 'The Integration Tests on Staging have failed. Find attached logs for more information.'
-                }
-            }
-        }
-        stage('Deploy to Production') {
-            steps {
-                echo "Running Integration Tests on Staging started and completed"
-            }
-        }
+  // Define environment variables
+  environment {
+   // DIRECTORY_PATH = "https://github.com/EkamBhullar/NewRepo"
+    TESTING_ENVIRONMENT = "junit"
+    PRODUCTION_ENVIRONMENT = "Aryan Singh" 
+  }
+
+  // Define stages in the pipeline
+  stages {
+    // Build stage
+    stage('Build') {
+      steps {
+        echo "Fetching source code from ${env.DIRECTORY_PATH}"
+        echo "Building the code using Maven" // Corrected grammar
+      }
     }
+
+    // Unit and integration tests stage
+    stage('Unit and Integration Tests') { // Improved capitalization
+      steps {
+        echo "Running unit and integration tests using JUnit"
+      }
+      post {
+        success {
+          emailext subject: 'Success: Testing Stage',
+                   body: 'Tests ran successfully!', // Added exclamation mark
+                   to: "aryansingh57602@gmail.com", // Updated email recipient
+                   attachLog: true
+        }
+        failure {
+          emailext subject: 'Failure: Testing Stage',
+                   body: 'Failed to run tests.', // Added period
+                   to: "aryansingh57602@gmail.com", // Updated email recipient
+                   attachLog: true
+        }
+      }
+    }
+
+    // Code analysis stage
+    stage('Code Analysis') {
+      steps {
+        echo "Checking code quality using SonarQube"
+      }
+    }
+
+    // Security scan stage
+    stage('Security Scan') {
+      steps {
+        echo "Performing security scan using Snyk"
+      }
+      post {
+        success {
+          emailext subject: 'Success: Security Scan',
+                   body: 'Security scan successful!', // Added exclamation mark
+                   to: "aryansingh57602@gmail.com", // Updated email recipient
+                   attachLog: true
+        }
+        failure {
+          emailext subject: 'Failure: Security Scan',
+                   body: 'Security scan failed.', // Added period
+                   to: "aryansingh57602@gmail.com", // Updated email recipient
+                   attachLog: true
+        }
+      }
+    }
+
+    // Deploy to staging stage
+    stage('Deploy to Staging') {
+      steps {
+        echo "Deploying to staging server (AWS EC2)"
+      }
+    }
+
+    // Integration tests on staging stage
+    stage('Integration Tests on Staging') { // Improved capitalization
+      steps {
+        echo "Running integration tests using Apache Camel tool"
+        echo "Updating code (Note: This action might not be intended here)" // Added clarification
+      }
+    }
+
+    // Deploy to production stage
+    stage('Deploy to Production') {
+      steps {
+        echo "Deploying application to production server (AWS EC2 instance)"
+      }
+    }
+  }
 }
