@@ -6,6 +6,13 @@ pipeline {
             steps {
                 // Dummy build step
                 echo 'Building the code...'
+                // Create a dummy build output file (replace this with your actual build command)
+                writeFile file: 'build_output.txt', text: 'Build output content'
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'build_output.txt', onlyIfSuccessful: true
+                }
             }
         }
         stage('2. Unit and Integration Tests') {
@@ -60,13 +67,13 @@ pipeline {
             emailext subject: 'Pipeline Success',
                      body: 'The pipeline completed successfully.',
                      to: 'aryan7codefor1@gmail.com',
-                     attachmentsPattern: '**/*'
+                     attachmentsPattern: '*.txt'
         }
         failure {
             emailext subject: 'Pipeline Failure',
                      body: 'The pipeline has failed.',
                      to: 'aryan7codefor1@gmail.com',
-                     attachmentsPattern: '**/*'
+                     attachmentsPattern: '*.txt'
         }
     }
 }
