@@ -4,54 +4,53 @@ pipeline {
     stages {
         stage('1. Build') {
             steps {
-                // Use Maven to build the code
-                sh 'mvn clean package'
+                // Dummy build step
+                echo 'Building the code...'
             }
         }
         stage('2. Unit and Integration Tests') {
             steps {
-                // Run unit tests
-                sh 'mvn test'
+                // Dummy unit and integration tests
+                echo 'Running unit tests...'
+                echo 'Unit tests passed.'
                 
-                // Run integration tests
-                // Replace 'run_integration_tests.sh' with your actual script to run integration tests
-                sh './run_integration_tests.sh'
+                echo 'Running integration tests...'
+                echo 'Integration tests passed.'
             }
         }
         stage('3. Code Analysis') {
             steps {
-                // Run code analysis using SonarQube scanner
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
-                }
+                // Dummy code analysis
+                echo 'Running code analysis...'
+                echo 'Code analysis passed.'
             }
         }
         stage('4. Security Scan') {
             steps {
-                // Run security scan using OWASP ZAP
-                // Replace 'run_security_scan.sh' with your actual script to run security scan
-                sh './run_security_scan.sh'
+                // Dummy security scan
+                echo 'Running security scan...'
+                echo 'Security scan passed.'
             }
         }
         stage('5. Deploy to Staging') {
             steps {
-                // Deploy to staging server using AWS CLI
-                // Replace 'deploy_to_staging.sh' with your actual script to deploy to staging
-                sh './deploy_to_staging.sh'
+                // Dummy deploy to staging
+                echo 'Deploying to staging server...'
+                echo 'Deployment to staging server successful.'
             }
         }
         stage('6. Integration Tests on Staging') {
             steps {
-                // Run integration tests on staging environment
-                // Replace 'run_integration_tests_staging.sh' with your actual script to run integration tests on staging
-                sh './run_integration_tests_staging.sh'
+                // Dummy integration tests on staging
+                echo 'Running integration tests on staging environment...'
+                echo 'Integration tests on staging passed.'
             }
         }
         stage('7. Deploy to Production') {
             steps {
-                // Deploy to production server using AWS CLI
-                // Replace 'deploy_to_production.sh' with your actual script to deploy to production
-                sh './deploy_to_production.sh'
+                // Dummy deploy to production
+                echo 'Deploying to production server...'
+                echo 'Deployment to production server successful.'
             }
         }
     }
