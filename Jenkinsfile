@@ -66,13 +66,13 @@ pipeline {
         success {
             emailext subject: 'Pipeline Success',
                      body: 'The pipeline completed successfully.',
-                     to: 'aryan7codefor1@gmail.com',
+                     to: 'aryansingh57602@gmail.com, aryan7codefor1@gmail.com',
                      attachmentsPattern: '*.txt'
         }
         failure {
             emailext subject: 'Pipeline Failure',
                      body: 'The pipeline has failed.',
-                     to: 'aryan7codefor1@gmail.com',
+                     to: 'aryansingh57602@gmail.com, aryan7codefor1@gmail.com',
                      attachmentsPattern: '*.txt'
         }
     }
