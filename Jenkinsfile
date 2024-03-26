@@ -1,92 +1,73 @@
 pipeline {
-  // Allow jobs to run on any agent (e.g., virtual machines)
-  agent any
-
-  // Define environment variables
-  environment {
-    TESTING_ENVIRONMENT = "junit"
-    PRODUCTION_ENVIRONMENT = "Aryan Singh" 
-  }
-
-  // Define stages in the pipeline
-  stages {
-    // Build stage
-    stage('Build') {
-      steps {
-        echo "Fetching source code from ${env.DIRECTORY_PATH}"
-        echo "Building the code using Maven" // Corrected grammar
-      }
+    agent any
+    
+    stages {
+        stage('1. Build') {
+            steps {
+                // Use Maven to build the code
+                sh 'mvn clean package'
+            }
+        }
+        stage('2. Unit and Integration Tests') {
+            steps {
+                // Run unit tests
+                sh 'mvn test'
+                
+                // Run integration tests
+                // Replace 'run_integration_tests.sh' with your actual script to run integration tests
+                sh './run_integration_tests.sh'
+            }
+        }
+        stage('3. Code Analysis') {
+            steps {
+                // Run code analysis using SonarQube scanner
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+        stage('4. Security Scan') {
+            steps {
+                // Run security scan using OWASP ZAP
+                // Replace 'run_security_scan.sh' with your actual script to run security scan
+                sh './run_security_scan.sh'
+            }
+        }
+        stage('5. Deploy to Staging') {
+            steps {
+                // Deploy to staging server using AWS CLI
+                // Replace 'deploy_to_staging.sh' with your actual script to deploy to staging
+                sh './deploy_to_staging.sh'
+            }
+        }
+        stage('6. Integration Tests on Staging') {
+            steps {
+                // Run integration tests on staging environment
+                // Replace 'run_integration_tests_staging.sh' with your actual script to run integration tests on staging
+                sh './run_integration_tests_staging.sh'
+            }
+        }
+        stage('7. Deploy to Production') {
+            steps {
+                // Deploy to production server using AWS CLI
+                // Replace 'deploy_to_production.sh' with your actual script to deploy to production
+                sh './deploy_to_production.sh'
+            }
+        }
     }
-
-    // Unit and integration tests stage
-    stage('Unit and Integration Tests') { // Improved capitalization
-      steps {
-        echo "Running unit and integration tests using JUnit"
-      }
-      post {
+    
+    post {
         success {
-          emailext subject: 'Success: Testing Stage',
-                   body: 'Tests ran successfully!', // Added exclamation mark
-                   to: "aryansingh57602@gmail.com", // Updated email recipient
-                   attachLog: true
+            emailext subject: 'Pipeline Success',
+                     body: 'The pipeline completed successfully.',
+                     to: 'aryan7codefor1@gmail.com',
+                     attachmentsPattern: '**/*'
         }
         failure {
-          emailext subject: 'Failure: Testing Stage',
-                   body: 'Failed to run tests.', // Added period
-                   to: "aryansingh57602@gmail.com", // Updated email recipient
-                   attachLog: true
+            emailext subject: 'Pipeline Failure',
+                     body: 'The pipeline has failed.',
+                     to: 'aryan7codefor1@gmail.com',
+                     attachmentsPattern: '**/*'
         }
-      }
     }
-
-    // Code analysis stage
-    stage('Code Analysis') {
-      steps {
-        echo "Checking code quality using SonarQube"
-      }
-    }
-
-    // Security scan stage
-    stage('Security Scan') {
-      steps {
-        echo "Performing security scan using Snyk"
-      }
-      post {
-        success {
-          emailext subject: 'Success: Security Scan',
-                   body: 'Security scan successful!', // Added exclamation mark
-                   to: "aryansingh57602@gmail.com", // Updated email recipient
-                   attachLog: true
-        }
-        failure {
-          emailext subject: 'Failure: Security Scan',
-                   body: 'Security scan failed.', // Added period
-                   to: "aryansingh57602@gmail.com", // Updated email recipient
-                   attachLog: true
-        }
-      }
-    }
-
-    // Deploy to staging stage
-    stage('Deploy to Staging') {
-      steps {
-        echo "Deploying to staging server (AWS EC2)"
-      }
-    }
-
-    // Integration tests on staging stage
-    stage('Integration Tests on Staging') { // Improved capitalization
-      steps {
-        echo "Running integration tests using Apache Camel tool"
-        echo "Updating code (Note: This action might not be intended here)" // Added clarification
-      }
-    }
-
-    // Deploy to production stage
-    stage('Deploy to Production') {
-      steps {
-        echo "Deploying application to production server (AWS EC2 instance)"
-      }
-    }
-  }
 }
