@@ -1,79 +1,92 @@
 pipeline {
-    agent any
-    
-    stages {
-        stage('1. Build') {
-            steps {
-                // Dummy build step
-                echo 'Building the code...'
-                // Create a dummy build output file (replace this with your actual build command)
-                writeFile file: 'build_output.txt', text: 'Build output content'
-            }
-            post {
-                success {
-                    archiveArtifacts artifacts: 'build_output.txt', onlyIfSuccessful: true
-                }
-            }
-        }
-        stage('2. Unit and Integration Tests') {
-            steps {
-                // Dummy unit and integration tests
-                echo 'Running unit tests...'
-                echo 'Unit tests passed.'
-                
-                echo 'Running integration tests...'
-                echo 'Integration tests passed.'
-            }
-        }
-        stage('3. Code Analysis') {
-            steps {
-                // Dummy code analysis
-                echo 'Running code analysis...'
-                echo 'Code analysis passed.'
-            }
-        }
-        stage('4. Security Scan') {
-            steps {
-                // Dummy security scan
-                echo 'Running security scan...'
-                echo 'Security scan passed.'
-            }
-        }
-        stage('5. Deploy to Staging') {
-            steps {
-                // Dummy deploy to staging
-                echo 'Deploying to staging server...'
-                echo 'Deployment to staging server successful.'
-            }
-        }
-        stage('6. Integration Tests on Staging') {
-            steps {
-                // Dummy integration tests on staging
-                echo 'Running integration tests on staging environment...'
-                echo 'Integration tests on staging passed.'
-            }
-        }
-        stage('7. Deploy to Production') {
-            steps {
-                // Dummy deploy to production
-                echo 'Deploying to production server...'
-                echo 'Deployment to production server successful.'
-            }
-        }
+  // Allow jobs to run on any agent (e.g., virtual machines)
+  agent any
+
+  // Define environment variables
+  environment {
+    TESTING_ENVIRONMENT = "junit"
+    PRODUCTION_ENVIRONMENT = "Aryan Singh" 
+  }
+
+  // Define stages in the pipeline
+  stages {
+    // Build stage
+    stage('Build') {
+      steps {
+        echo "Fetching source code from ${env.DIRECTORY_PATH}"
+        echo "Building the code using Maven" // Corrected grammar
+      }
     }
-    
-    post {
+
+    // Unit and integration tests stage
+    stage('Unit and Integration Tests') { // Improved capitalization
+      steps {
+        echo "Running unit and integration tests using JUnit"
+      }
+      post {
         success {
-            emailext subject: 'Pipeline Success',
-                     body: 'The pipeline completed successfully.',
-                     to: 'aryansingh57602@gmail.com, aryan7codefor1@gmail.com',
-                     attachmentsPattern: '*.txt'
+          emailext subject: 'Success: Testing Stage',
+                   body: 'Tests ran successfully!', // Added exclamation mark
+                   to: "aryansingh57602@gmail.com", // Updated email recipient
+                   attachLog: true
         }
         failure {
-            emailext subject: 'Pipeline Failure',
-                     body: 'The pipeline has failed.',
-                     to: 'aryansingh57602@gmail.com, aryan7codefor1@gmail.com',
-                     attachmentsPattern: '*.txt'
+          emailext subject: 'Failure: Testing Stage',
+                   body: 'Failed to run tests.', // Added period
+                   to: "aryansingh57602@gmail.com", // Updated email recipient
+                   attachLog: true
         }
+      }
     }
+
+    // Code analysis stage
+    stage('Code Analysis') {
+      steps {
+        echo "Checking code quality using SonarQube"
+      }
+    }
+
+    // Security scan stage
+    stage('Security Scan') {
+      steps {
+        echo "Performing security scan using Snyk"
+      }
+      post {
+        success {
+          emailext subject: 'Success: Security Scan',
+                   body: 'Security scan successful!', // Added exclamation mark
+                   to: "aryansingh57602@gmail.com", // Updated email recipient
+                   attachLog: true
+        }
+        failure {
+          emailext subject: 'Failure: Security Scan',
+                   body: 'Security scan failed.', // Added period
+                   to: "aryansingh57602@gmail.com", // Updated email recipient
+                   attachLog: true
+        }
+      }
+    }
+
+    // Deploy to staging stage
+    stage('Deploy to Staging') {
+      steps {
+        echo "Deploying to staging server (AWS EC2)"
+      }
+    }
+
+    // Integration tests on staging stage
+    stage('Integration Tests on Staging') { // Improved capitalization
+      steps {
+        echo "Running integration tests using Apache Camel tool"
+        echo "Updating code (Note: This action might not be intended here)" // Added clarification
+      }
+    }
+
+    // Deploy to production stage
+    stage('Deploy to Production') {
+      steps {
+        echo "Deploying application to production server (AWS EC2 instance)"
+      }
+    }
+  }
 }
