@@ -86,7 +86,7 @@ pipeline {
     stage('Deploy to Production') {
       steps {
         echo "Deploying application to production server (AWS EC2 instance)"
-      }
+      
     }
   }
 }
