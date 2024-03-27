@@ -27,13 +27,13 @@ pipeline {
                 success {
                     emailext subject: 'Success: Testing Stage',
                              body: 'Tests ran successfully!', // Added exclamation mark
-                             to: "aryansingh57602@gmail.com", // Updated email recipient
+                             to: "aryan7codefor1@gmail.com", // Updated email recipient
                              attachLog: true
                 }
                 failure {
                     emailext subject: 'Failure: Testing Stage',
                              body: 'Failed to run tests.', // Added period
-                             to: "aryansingh57602@gmail.com", // Updated email recipient
+                             to: "aryan7codefor1@gmail.com", // Updated email recipient
                              attachLog: true
                 }
             }
@@ -55,13 +55,13 @@ pipeline {
                 success {
                     emailext subject: 'Success: Security Scan',
                              body: 'Security scan successful!', // Added exclamation mark
-                             to: "aryansingh57602@gmail.com", // Updated email recipient
+                             to: "aryan7codefor1@gmail.com", // Updated email recipient
                              attachLog: true
                 }
                 failure {
                     emailext subject: 'Failure: Security Scan',
                              body: 'Security scan failed.', // Added period
-                             to: "aryansingh57602@gmail.com", // Updated email recipient
+                             to: "aryan7codefor1@gmail.com", // Updated email recipient
                              attachLog: true
                 }
             }
